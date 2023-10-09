@@ -55,7 +55,7 @@ class aabb {
 
     bool hit(const ray& r, interval ray_t) const {
         for (int a = 0; a < 3; a++) {
-            auto invD = 1 / r.direction()[a];
+            auto invD = r.inv_direction()[a];
             auto orig = r.origin()[a];
 
             auto t0 = (axis(a).min - orig) * invD;

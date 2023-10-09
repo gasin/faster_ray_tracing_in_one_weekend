@@ -27,6 +27,7 @@ make Ray Tracing in One Weekend Faster
 | ---- | ---- |
 | fetch bvh | 4m22.333s |
 | use volume to construct bvh | 3m29.432s |
+| precalculate ray_inv | 3m16.294s |
 
 ## Setting
 ### Constraint

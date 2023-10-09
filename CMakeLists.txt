@@ -8,8 +8,8 @@ cmake_minimum_required ( VERSION 3.1.0...3.27.0 )
 
 project ( RTWeekend LANGUAGES CXX )
 
-# Set to C++11
-set ( CMAKE_CXX_STANDARD          11 )
+# Set to C++17
+set ( CMAKE_CXX_STANDARD          17 )
 set ( CMAKE_CXX_STANDARD_REQUIRED ON )
 set ( CMAKE_CXX_EXTENSIONS        OFF )
 
@@ -47,3 +47,9 @@ add_compile_options(-Ofast -march=native)
 
 # Executables
 add_executable(inOneWeekend      ${EXTERNAL} ${SOURCE_ONE_WEEKEND})
+
+# Profiling
+add_link_options(-pg -no-pie)
+add_compile_options(-pg -no-pie)
+
+add_executable(inOneWeekend_prof ${EXTERNAL} ${SOURCE_ONE_WEEKEND})

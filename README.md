@@ -28,3 +28,4 @@ make Ray Tracing in One Weekend Faster
 | ---- | ---- |
 | origin | 2m19.456s |
 | add compile option | 0m24.352s |
+| fetch bvh | 0m5.794s |

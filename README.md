@@ -2,20 +2,7 @@
 
 make Ray Tracing in One Weekend Faster
 
-## Setting
-### Constraint
-- no GPU
-- no multithreading
-- no specification changes
-  - importance sampling, etc
-
-### Environment
-- CPU
-  - Intel Core i7-13700KF
-- compiler
-  - `g++.exe (Rev2, Built by MSYS2 project) 13.2.0`
-
-## Log
+## Result
 
 ### Parameter
 ```cpp
@@ -29,3 +16,36 @@ make Ray Tracing in One Weekend Faster
 | origin | 2m19.456s |
 | add compile option | 0m24.352s |
 | fetch bvh | 0m5.794s |
+
+## Setting
+### Constraint
+- no GPU
+- no multithreading
+- no excessive exploit of input data
+  - no compile-time calculation
+  - no embedding
+- no specification changes
+  - no importance sampling
+
+### Environment
+- CPU
+  - Intel Core i7-13700KF
+- OS
+  - Windows 11
+- compiler
+  - `g++.exe (Rev2, Built by MSYS2 project) 13.2.0`
+
+### Usage
+```bash
+# build and run
+# output to img.ppm
+bash ./run.sh
+```
+
+### Profiling
+```bash
+cmake -B build
+cmake --build build
+./build/inOneWeekend_prof.exe > img.ppm
+gprof ./build/inOneWeekend_prof.exe
+```

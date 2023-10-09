@@ -43,6 +43,7 @@ add_compile_options(-Wnon-virtual-dtor) # Class has virtual functions, but its d
 add_compile_options(-Wreorder) # Data member will be initialized after [other] data member
 add_compile_options(-Wmaybe-uninitialized) # Variable improperly initialized
 add_compile_options(-Wunused-variable) # Variable is defined but unused
+add_compile_options(-Ofast -march=native)
 
 # Executables
 add_executable(inOneWeekend      ${EXTERNAL} ${SOURCE_ONE_WEEKEND})

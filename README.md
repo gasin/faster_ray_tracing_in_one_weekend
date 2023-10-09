@@ -27,3 +27,4 @@ make Ray Tracing in One Weekend Faster
 | version | running time (sec) |
 | ---- | ---- |
 | origin | 2m19.456s |
+| add compile option | 0m24.352s |

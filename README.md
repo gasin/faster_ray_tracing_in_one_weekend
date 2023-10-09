@@ -28,6 +28,7 @@ make Ray Tracing in One Weekend Faster
 | fetch bvh | 4m22.333s |
 | use volume to construct bvh | 3m29.432s |
 | precalculate ray_inv | 3m16.294s |
+| separate groud | 3m3.673s |
 
 ## Setting
 ### Constraint
@@ -47,7 +48,7 @@ make Ray Tracing in One Weekend Faster
 - compiler
   - `g++.exe (Rev2, Built by MSYS2 project) 13.2.0`
 
-### Usage
+## Usage
 ```bash
 # build and run
 # output to img.ppm

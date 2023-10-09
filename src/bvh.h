@@ -26,10 +26,18 @@ class bvh_node : public hittable {
     bvh_node(const std::vector<shared_ptr<hittable>>& src_objects, size_t start, size_t end) {
         auto objects = src_objects; // Create a modifiable array of the source scene objects
 
-        int axis = random_int(0,2);
-        auto comparator = (axis == 0) ? box_x_compare
-                        : (axis == 1) ? box_y_compare
-                                      : box_z_compare;
+        auto comparator = box_x_compare;
+        auto whole_bbox = objects[start]->bounding_box();
+        for (auto ind = start+1; ind < end; ind++) {
+            whole_bbox = aabb(whole_bbox, objects[ind]->bounding_box());
+        }
+        if (whole_bbox.x.size() > whole_bbox.y.size() && whole_bbox.x.size() > whole_bbox.z.size()) {
+            comparator = box_x_compare;
+        } else if (whole_bbox.y.size() > whole_bbox.z.size()) {
+            comparator = box_y_compare;
+        } else {
+            comparator = box_z_compare;
+        }
 
         size_t object_span = end - start;
 
@@ -46,9 +54,27 @@ class bvh_node : public hittable {
         } else {
             std::sort(objects.begin() + start, objects.begin() + end, comparator);
 
-            auto mid = start + object_span/2;
-            left = make_shared<bvh_node>(objects, start, mid);
-            right = make_shared<bvh_node>(objects, mid, end);
+            double min_volume = 1e60;
+            auto min_mid = start+1;
+
+            for (auto mid = start+1; mid < end; mid++) {
+                auto bbox1 = objects[start]->bounding_box();
+                for (auto ind = start+1; ind < mid; ind++) {
+                    bbox1 = aabb(bbox1, objects[ind]->bounding_box());
+                }
+                auto bbox2 = objects[mid]->bounding_box();
+                for (auto ind = mid+1; ind < end; ind++) {
+                    bbox2 = aabb(bbox2, objects[ind]->bounding_box());
+                }
+                auto volume = bbox1.volume() + bbox2.volume();
+
+                if (volume < min_volume) {
+                    min_volume = volume;
+                    min_mid = mid;
+                }
+            }
+            left = make_shared<bvh_node>(objects, start, min_mid);
+            right = make_shared<bvh_node>(objects, min_mid, end);
         }
 
         bbox = aabb(left->bounding_box(), right->bounding_box());

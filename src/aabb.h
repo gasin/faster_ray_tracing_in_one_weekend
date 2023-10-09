@@ -72,6 +72,14 @@ class aabb {
         }
         return true;
     }
+
+    double volume() const {
+        return x.size()*y.size()*z.size();
+    }
+
+    vec3 center() const {
+        return vec3((x.min+x.max)/2.0, (y.min+y.max)/2.0, (z.min+z.max)/2.0);
+    }
 };
 
 aabb operator+(const aabb& bbox, const vec3& offset) {

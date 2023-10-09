@@ -17,6 +17,17 @@ make Ray Tracing in One Weekend Faster
 | add compile option | 0m24.352s |
 | fetch bvh | 0m5.794s |
 
+
+```cpp
+    cam.image_width       = 1200;
+    cam.samples_per_pixel = 500;
+    cam.max_depth         = 10;
+```
+| version | running time (sec) |
+| ---- | ---- |
+| fetch bvh | 4m22.333s |
+| use volume to construct bvh | 3m29.432s |
+
 ## Setting
 ### Constraint
 - no GPU

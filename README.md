@@ -30,6 +30,7 @@ make Ray Tracing in One Weekend Faster
 | precalculate ray_inv | 3m16.294s |
 | separate groud | 3m3.673s |
 | stop early return in aabb hit | 2m55.751s |
+| remove swap in aabb hit | 2m50.553s |
 
 ## Setting
 ### Constraint

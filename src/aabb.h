@@ -61,11 +61,13 @@ class aabb {
             auto t0 = (axis(a).min - orig) * invD;
             auto t1 = (axis(a).max - orig) * invD;
 
-            if (invD < 0)
-                std::swap(t0, t1);
-
-            if (t0 > ray_t.min) ray_t.min = t0;
-            if (t1 < ray_t.max) ray_t.max = t1;
+            if (invD < 0) {
+                if (t1 > ray_t.min) ray_t.min = t1;
+                if (t0 < ray_t.max) ray_t.max = t0;
+            } else {
+                if (t0 > ray_t.min) ray_t.min = t0;
+                if (t1 < ray_t.max) ray_t.max = t1;
+            }
         }
         return ray_t.max > ray_t.min;
     }

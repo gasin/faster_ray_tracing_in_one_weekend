@@ -54,7 +54,7 @@ class bvh_node : public hittable {
         } else {
             std::sort(objects.begin() + start, objects.begin() + end, comparator);
 
-            double min_volume = 1e60;
+            double min_score = 1e60;
             auto min_mid = start+1;
 
             for (auto mid = start+1; mid < end; mid++) {
@@ -66,10 +66,10 @@ class bvh_node : public hittable {
                 for (auto ind = mid+1; ind < end; ind++) {
                     bbox2 = aabb(bbox2, objects[ind]->bounding_box());
                 }
-                auto volume = bbox1.volume() + bbox2.volume();
+                auto score = bbox1.surface_area() * (mid-start) + bbox2.surface_area() * (end-mid);
 
-                if (volume < min_volume) {
-                    min_volume = volume;
+                if (score < min_score) {
+                    min_score = score;
                     min_mid = mid;
                 }
             }

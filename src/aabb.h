@@ -72,8 +72,8 @@ class aabb {
         return ray_t.max > ray_t.min;
     }
 
-    double volume() const {
-        return x.size()*y.size()*z.size();
+    double surface_area() const {
+        return x.size()*y.size()+y.size()*z.size()+z.size()*x.size();
     }
 
     vec3 center() const {

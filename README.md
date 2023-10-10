@@ -31,6 +31,7 @@ make Ray Tracing in One Weekend Faster
 | separate groud | 3m3.673s |
 | stop early return in aabb hit | 2m55.751s |
 | remove swap in aabb hit | 2m50.553s |
+| use precise surface area heuristic | 2m39.093s |
 
 ## Setting
 ### Constraint

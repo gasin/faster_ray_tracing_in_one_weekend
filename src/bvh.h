@@ -33,10 +33,13 @@ class bvh_node : public hittable {
         }
         if (whole_bbox.x.size() > whole_bbox.y.size() && whole_bbox.x.size() > whole_bbox.z.size()) {
             comparator = box_x_compare;
+            sep = 0;
         } else if (whole_bbox.y.size() > whole_bbox.z.size()) {
             comparator = box_y_compare;
+            sep = 1;
         } else {
             comparator = box_z_compare;
+            sep = 2;
         }
 
         size_t object_span = end - start;
@@ -84,10 +87,17 @@ class bvh_node : public hittable {
         if (!bbox.hit(r, ray_t))
             return false;
 
-        bool hit_left = left->hit(r, ray_t, rec);
-        bool hit_right = right->hit(r, interval(ray_t.min, hit_left ? rec.t : ray_t.max), rec);
+        if (r.direction().e[sep] > 0) {
+            bool hit_left = left->hit(r, ray_t, rec);
+            bool hit_right = right->hit(r, interval(ray_t.min, hit_left ? rec.t : ray_t.max), rec);
 
-        return hit_left || hit_right;
+            return hit_left || hit_right;
+        } else {
+            bool hit_right = right->hit(r, ray_t, rec);
+            bool hit_left = left->hit(r, interval(ray_t.min, hit_right ? rec.t : ray_t.max), rec);
+
+            return hit_left || hit_right;
+        }
     }
 
     aabb bounding_box() const override { return bbox; }
@@ -96,6 +106,7 @@ class bvh_node : public hittable {
     shared_ptr<hittable> left;
     shared_ptr<hittable> right;
     aabb bbox;
+    int sep;
 
     static bool box_compare(
         const shared_ptr<hittable> a, const shared_ptr<hittable> b, int axis_index

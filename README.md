@@ -32,6 +32,7 @@ make Ray Tracing in One Weekend Faster
 | stop early return in aabb hit | 2m55.751s |
 | remove swap in aabb hit | 2m50.553s |
 | use precise surface area heuristic | 2m39.093s |
+| consider bvh traversal order | 2m27.991s |
 
 ## Setting
 ### Constraint

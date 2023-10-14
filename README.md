@@ -35,6 +35,17 @@ make Ray Tracing in One Weekend Faster
 | consider bvh traversal order | 2m27.991s |
 | implement simple qbvh without simd | 2m10.904s |
 
+
+```cpp
+# Same settings as RayTracingInOneWeekend
+    cam.image_width       = 1200;
+    cam.samples_per_pixel = 500;
+    cam.max_depth         = 50;
+```
+| version | running time (sec) |
+| ---- | ---- |
+| implement simple qbvh without simd | 2m14.838s |
+
 ## Setting
 ### Constraint
 - no GPU
@@ -44,6 +55,7 @@ make Ray Tracing in One Weekend Faster
   - no embedding
 - no specification changes
   - no importance sampling
+  - no conversion of double to float
 
 ### Environment
 - CPU
@@ -65,5 +77,5 @@ bash ./run.sh
 cmake -B build
 cmake --build build
 ./build/inOneWeekend_prof.exe > img.ppm
-gprof ./build/inOneWeekend_prof.exe
+gprof ./build/inOneWeekend_prof.exe > prof.txt
 ```

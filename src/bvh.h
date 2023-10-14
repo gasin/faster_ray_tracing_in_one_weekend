@@ -102,11 +102,11 @@ class bvh_node : public hittable {
 
     aabb bounding_box() const override { return bbox; }
 
-  private:
     shared_ptr<hittable> left;
     shared_ptr<hittable> right;
     aabb bbox;
     int sep;
+  private:
 
     static bool box_compare(
         const shared_ptr<hittable> a, const shared_ptr<hittable> b, int axis_index

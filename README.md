@@ -45,6 +45,7 @@ make Ray Tracing in One Weekend Faster
 | version | running time (sec) |
 | ---- | ---- |
 | implement simple qbvh without simd | 2m14.838s |
+| implement parallel aabb hit detection | 1m54.029s |
 
 ## Setting
 ### Constraint

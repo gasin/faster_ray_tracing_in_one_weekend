@@ -6,6 +6,8 @@
 #include "hittable.h"
 #include "bvh.h"
 
+#include "immintrin.h"
+
 int counter = 0;
 
 class qbvh_node : public hittable {
@@ -42,10 +44,52 @@ class qbvh_node : public hittable {
         child[index] = make_shared<qbvh_node>(bvh_root);
     }
 
+    __m256d intersect(const ray& r, interval ray_t) const {
+        __m256d b[3][2] = {
+            {
+                _mm256_set_pd(bbox[3].x.min, bbox[2].x.min, bbox[1].x.min, bbox[0].x.min),
+                _mm256_set_pd(bbox[3].x.max, bbox[2].x.max, bbox[1].x.max, bbox[0].x.max),
+            },
+            {
+                _mm256_set_pd(bbox[3].y.min, bbox[2].y.min, bbox[1].y.min, bbox[0].y.min),
+                _mm256_set_pd(bbox[3].y.max, bbox[2].y.max, bbox[1].y.max, bbox[0].y.max),
+            },
+            {
+                _mm256_set_pd(bbox[3].z.min, bbox[2].z.min, bbox[1].z.min, bbox[0].z.min),
+                _mm256_set_pd(bbox[3].z.max, bbox[2].z.max, bbox[1].z.max, bbox[0].z.max),
+            },
+        };
+        __m256d t0 = _mm256_set1_pd(ray_t.min), t1 = _mm256_set1_pd(ray_t.max);
+        __m256d invD[3] = {
+            _mm256_set1_pd(r.inv_direction()[0]),
+            _mm256_set1_pd(r.inv_direction()[1]),
+            _mm256_set1_pd(r.inv_direction()[2]),
+        };
+        __m256d orig[3] = {
+            _mm256_set1_pd(r.origin()[0]),
+            _mm256_set1_pd(r.origin()[1]),
+            _mm256_set1_pd(r.origin()[2]),
+        };
+
+        for (int a = 0; a < 3; a++) {
+            __m256d ta = _mm256_mul_pd(_mm256_sub_pd(b[a][0], orig[a]), invD[a]);
+            __m256d tb = _mm256_mul_pd(_mm256_sub_pd(b[a][1], orig[a]), invD[a]);
+            t0 = _mm256_max_pd(_mm256_min_pd(ta, tb), t0);
+            t1 = _mm256_min_pd(_mm256_max_pd(ta, tb), t1);
+        }
+        return _mm256_cmp_pd(t0, t1, 2);
+    }
+
     bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
+        __m256d is_box_hit = intersect(r, ray_t);
+        union myUnion {
+            double d;
+            uint64_t x;
+        };
+        myUnion myunions[4] = {is_box_hit[0], is_box_hit[1], is_box_hit[2], is_box_hit[3] };
         bool is_hit = false;
         for (int i = 0; i < 4; i++) {
-            if (!bbox[i].hit(r, ray_t)) {
+            if (myunions[i].x == 0) {
                 continue;
             }
             if (child[i]->hit(r, ray_t, rec)) {

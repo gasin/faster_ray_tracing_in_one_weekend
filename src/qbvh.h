@@ -8,6 +8,8 @@
 
 #include "immintrin.h"
 
+#include <bit>
+
 int counter = 0;
 
 class qbvh_node : public hittable {
@@ -76,14 +78,9 @@ class qbvh_node : public hittable {
 
     bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
         __m256d is_box_hit = intersect(r, ray_t);
-        union myUnion {
-            double d;
-            uint64_t x;
-        };
-        myUnion myunions[4] = {is_box_hit[0], is_box_hit[1], is_box_hit[2], is_box_hit[3] };
         bool is_hit = false;
         for (int i = 0; i < 4; i++) {
-            if (myunions[i].x == 0) {
+            if (!std::bit_cast<uint64_t>(is_box_hit[i])) {
                 continue;
             }
             if (child[i]->hit(r, ray_t, rec)) {

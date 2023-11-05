@@ -32,9 +32,16 @@ inline double degrees_to_radians(double degrees) {
     return degrees * pi / 180.0;
 }
 
+unsigned long xor128() {
+    static unsigned long x=123456789, y=362436069, z=521288629, w=88675123;
+    unsigned long t=(x^(x<<11));
+    x=y; y=z; z=w;
+    return ( w=(w^(w>>19))^(t^(t>>8)) );
+}
+
 inline double random_double() {
     // Returns a random real in [0,1).
-    return rand() / (RAND_MAX + 1.0);
+    return xor128() / (ULONG_MAX + 1.0);
 }
 
 inline double random_double(double min, double max) {

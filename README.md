@@ -47,6 +47,7 @@ make Ray Tracing in One Weekend Faster
 | implement simple qbvh without simd | 2m14.838s |
 | implement parallel aabb hit detection | 1m54.029s |
 | precalculate parallel bbox | 1m47.622s |
+| use xorshift instead of rand | 1m17.546s |
 
 ## Setting
 ### Constraint

@@ -55,9 +55,6 @@ make Ray Tracing in One Weekend Faster
 - no excessive exploit of input data
   - no compile-time calculation
   - no embedding
-- no specification changes
-  - no importance sampling
-  - no conversion of double to float
 
 ### Environment
 - CPU

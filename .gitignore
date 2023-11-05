@@ -1,2 +1,10 @@
 /build
 *.ppm
+
+*.s
+gmon.out
+tmp/
+*.txt
+*.exe
+
+.vscode
